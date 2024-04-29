@@ -23,7 +23,12 @@ public class ConsoleReader implements Runnable {
                 if (message == null) {
                     break;
                 } else {
-                    chatServer.broadcastMessageFromConsole("Console", message);
+                    if (message.contains("/toggleconnection")) {
+                        chatServer.toggleListenForConnections();
+                    }else {
+                        chatServer.broadcastMessageFromConsole("Console", message);
+                    }
+
                 }
 
             }

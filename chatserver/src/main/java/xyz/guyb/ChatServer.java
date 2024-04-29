@@ -14,13 +14,15 @@ public class ChatServer {
     private final Map<Integer, String> clientUsernames = new HashMap<>();
     private final List<Integer> connectedUsers = new ArrayList<>();
     private boolean listenForConnections = true;
-    private HashMap<Integer, Integer> userRolls = new HashMap<>();
+    private final HashMap<Integer, Integer> userRolls = new HashMap<>();
 
 
     public ChatServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         logger = new MessageLogger();
         logger.logMessage("Server is now listening on all interfaces on port " + port);
+        // Start the web server in a separate thread
+        new Thread(new ChatServerWebServer(this, port + 1)).start(); // Assuming web server on next port
     }
 
     public void start() throws IOException {
@@ -44,8 +46,6 @@ public class ChatServer {
         int port = 8089;
         if (args.length != 0) {
             port = Integer.parseInt(args[0]);
-
-
         }
 
         ChatServer server = new ChatServer(port);
@@ -54,7 +54,7 @@ public class ChatServer {
 
     public void broadcastMessage(String username,int clientID ,String message) throws IOException {
         message = username + "#" + clientID + ": " + message;
-        logger.logMessage(message);
+        logger.logChatMessage(message);
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
@@ -62,13 +62,14 @@ public class ChatServer {
 
     public void broadcastMessageFromConsole(String username, String message) throws IOException {
         message = username + ": " + message;
-        logger.logMessage(message);
+        logger.logChatMessage(message);
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
     }
 
     public void broadcastRawMessage(String rawMessage) throws IOException {
+        logger.logMessage(rawMessage);
         for (ClientHandler client : clients) {
             client.sendMessage(rawMessage);
         }
@@ -108,11 +109,7 @@ public class ChatServer {
     }
 
     public void toggleListenForConnections() {
-        if (listenForConnections) {
-            listenForConnections = false;
-        } else {
-            listenForConnections = true;
-        }
+        listenForConnections = !listenForConnections;
     }
 
     public synchronized List<Integer> getConnectedUsers() {
@@ -130,5 +127,8 @@ public class ChatServer {
         return Collections.max(userRolls.values());
     }
 
+    public int getPort(){
+        return serverSocket.getLocalPort();
+    }
 
 }

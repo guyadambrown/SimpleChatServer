@@ -4,17 +4,16 @@ import java.io.*;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Random;
 
 public class ClientHandler extends Thread{
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
-    private int clientID;
+    private final Socket socket;
+    private final BufferedReader in;
+    private final PrintWriter out;
+    private final int clientID;
     private String username;
-    private ChatServer chatServer;
-    private String motd;
+    private final ChatServer chatServer;
+    private final String motd;
 
     public ClientHandler(Socket socket, ChatServer chatServer) throws IOException {
         this.socket = socket;
@@ -50,6 +49,7 @@ public class ClientHandler extends Thread{
                 }
 
             }
+
         } catch (IOException e) {
             if (clientID != 0) {
                 String formattedLeaveMessage = username + "#" + clientID + " left the chat";
@@ -131,6 +131,12 @@ public class ClientHandler extends Thread{
                 }
                 chatServer.addRoll(clientID, randomNumber);
                break;
+
+            case "users":
+                sendMessage("There are " + chatServer.getConnectedUsers().toArray().length + " users connected.");
+                break;
+
+
 
             default:
                 sendMessage("Unknown command: " + command);
