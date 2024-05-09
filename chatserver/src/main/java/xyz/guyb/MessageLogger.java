@@ -9,12 +9,16 @@ import java.util.Date;
 public class MessageLogger {
     private final BufferedWriter serverLogWriter;
     private final BufferedWriter chatLogWriter;
-
-
+    private File serverLogFile;
+    private File chatLogFile;
 
     public MessageLogger() throws IOException {
-        serverLogWriter = new BufferedWriter(new FileWriter("ServerLog.log"));
-        chatLogWriter = new BufferedWriter(new FileWriter("ChatLog.log"));
+        String serverLogFileName = "ServerLog" + currentTimeInMillis + ".log";
+        String chatLogFileName = "ChatLog" + currentTimeInMillis + ".log";
+        serverLogWriter = new BufferedWriter(new FileWriter(serverLogFileName));
+        chatLogWriter = new BufferedWriter(new FileWriter(chatLogFileName));
+        serverLogFile = new File(serverLogFileName);
+        chatLogFile = new File(chatLogFileName);
     }
 
     // Get date and time to add in front of message
@@ -47,9 +51,9 @@ public class MessageLogger {
     }
 
     public File getChatLog() {
-        return new File("ChatLog.log");
+        return chatLogFile;
     }
     public File getServerLog() {
-        return new File("ServerLog.log");
+        return serverLogFile;
     }
 }
