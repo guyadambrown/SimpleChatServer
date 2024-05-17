@@ -9,12 +9,12 @@ import java.util.Date;
 public class MessageLogger {
     private final BufferedWriter serverLogWriter;
     private final BufferedWriter chatLogWriter;
-    private File serverLogFile;
-    private File chatLogFile;
+    private final File serverLogFile;
+    private final File chatLogFile;
 
     public MessageLogger() throws IOException {
-        String serverLogFileName = "ServerLog" + currentTimeInMillis + ".log";
-        String chatLogFileName = "ChatLog" + currentTimeInMillis + ".log";
+        String serverLogFileName = "ServerLog " + currentDate + ".log";
+        String chatLogFileName = "ChatLog " + currentDate + ".log";
         serverLogWriter = new BufferedWriter(new FileWriter(serverLogFileName));
         chatLogWriter = new BufferedWriter(new FileWriter(chatLogFileName));
         serverLogFile = new File(serverLogFileName);
@@ -25,6 +25,7 @@ public class MessageLogger {
     long currentTimeInMillis = System.currentTimeMillis();
 
     Date currentDate = new Date(currentTimeInMillis);
+
 
     String currentDateTime = currentDate.toString();
     String messagePrefix = "[" + currentDateTime + "] ";

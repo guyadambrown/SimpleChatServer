@@ -49,6 +49,9 @@ public class ClientHandler extends Thread{
                 }
 
             }
+            String formattedLeaveMessage = username + "#" + clientID + " left the chat";
+            chatServer.broadcastRawMessage(formattedLeaveMessage);
+            chatServer.removeUser(clientID);
 
         } catch (IOException e) {
             if (clientID != 0) {

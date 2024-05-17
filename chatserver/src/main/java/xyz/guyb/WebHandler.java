@@ -24,7 +24,7 @@ class WebHandler implements HttpHandler {
         long currentTimeInMillis = System.currentTimeMillis();
         Date currentDate = new Date(currentTimeInMillis);
         String currentDateTime = currentDate.toString();
-
+        sb.append("<meta http-equiv=\"refresh\" content=\"5\">"); // Refresh every 5 seconds
         sb.append("<html><body>");
         sb.append("<h1>Chat Server").append(" (Port ").append(chatServer.getPort()).append(")</h1>");
         sb.append("<p>Welcome to the Chat Server!, it is currently ").append(currentDateTime).append("</p>");

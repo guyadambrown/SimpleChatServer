@@ -21,13 +21,14 @@ public class ChatServer {
         serverSocket = new ServerSocket(port);
         logger = new MessageLogger();
         logger.logMessage("Server is now listening on all interfaces on port " + port);
-        // Start the web server in a separate thread
-        new Thread(new ChatServerWebServer(this, port + 1)).start(); // Assuming web server on next port
+
     }
 
-    public void start() throws IOException {
+    public void start(int webPort) throws IOException {
         Thread consoleInputThread = new Thread(new ConsoleReader(this));
         consoleInputThread.start();
+        Thread webServerThread = new Thread( new ChatServerWebServer(this, webPort));
+        webServerThread.start();
 
         while (listenForConnections) {
             try {
@@ -44,12 +45,19 @@ public class ChatServer {
 
     public static void main(String[] args) throws IOException {
         int port = 8089;
-        if (args.length != 0) {
+        int webPort = 8090;
+
+        if (args.length > 0) {
             port = Integer.parseInt(args[0]);
+
+        }
+
+        if (args.length > 1) {
+            webPort = Integer.parseInt(args[1]);
         }
 
         ChatServer server = new ChatServer(port);
-        server.start();
+        server.start(webPort);
     }
 
     public void broadcastMessage(String username,int clientID ,String message) throws IOException {
