@@ -13,8 +13,8 @@ public class MessageLogger {
     private final File chatLogFile;
 
     public MessageLogger() throws IOException {
-        String serverLogFileName = "ServerLog " + currentDate + ".log";
-        String chatLogFileName = "ChatLog " + currentDate + ".log";
+        String serverLogFileName = "ServerLog " + currentDate.toString().replace(":", "-") + ".log";
+        String chatLogFileName = "ChatLog " + currentDate.toString().replace(":", "-") + ".log";
         serverLogWriter = new BufferedWriter(new FileWriter(serverLogFileName));
         chatLogWriter = new BufferedWriter(new FileWriter(chatLogFileName));
         serverLogFile = new File(serverLogFileName);
