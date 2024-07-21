@@ -1,4 +1,4 @@
-# Programming 4 - Java chat server
+# SimpleChatServer
 
 A socket based chat server built with java and maven.
 
